@@ -11,19 +11,21 @@ import sqlite3
 setup_sql = """
 CREATE TABLE IF NOT EXISTS f_temps (
     read_time float PRIMARY KEY,
-    temp_1 float,
+    sensor text,
+    unit text,
     temp_2 float
     );
 """
 
 insert_sql = """
-INSERT INTO f_temps VALUES (%s,%s,%s)
+INSERT INTO f_temps VALUES (%s,%s,%s,%s)
 """
 
 read_sql = """
 SELECT * FROM f_temps
 """
 
+# Define function to execute a create, insert or read sql statement
 def execute_sql(sql_string, read=False):
     sql_string = sql_string.replace('\n','')
     conn=sqlite3.connect("temp_sensor.db")
@@ -38,13 +40,16 @@ def execute_sql(sql_string, read=False):
         conn.commit()
         rows = None
     return rows
-    
-def insert_readings(read_time, temp_1, temp_2):
-    sql_string = insert_sql % (read_time, temp_1, temp_2)
+
+# Define function to insert readings into database  
+def insert_readings(read_time, sensor, unit, value):
+    sql_string = insert_sql % (read_time, sensor, unit, value)
     execute_sql(sql_string)
-    
+    return None
+
+# Define function to get readings from database    
 def view_readings():
     return execute_sql(read_sql, read=True)
 
-# Setup inital connection    
+# Setup inital connection and create table if doesn't exist
 execute_sql(setup_sql)
