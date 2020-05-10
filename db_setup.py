@@ -8,17 +8,20 @@ import sqlite3
 #    sqlFile.close()
 #    return sqlText
 
+db_path = "/home/pi/Documents/temp_sensor/"
+
 setup_sql = """
 CREATE TABLE IF NOT EXISTS f_temps (
-    read_time float PRIMARY KEY,
+    read_time int,
     sensor text,
     unit text,
-    temp_2 float
+    temp_2 float,
+    PRIMARY KEY (read_time, sensor)
     );
 """
 
 insert_sql = """
-INSERT INTO f_temps VALUES (%s,%s,%s,%s)
+INSERT INTO f_temps VALUES (%s,'%s','%s',%s)
 """
 
 read_sql = """
@@ -28,7 +31,7 @@ SELECT * FROM f_temps
 # Define function to execute a create, insert or read sql statement
 def execute_sql(sql_string, read=False):
     sql_string = sql_string.replace('\n','')
-    conn=sqlite3.connect("temp_sensor.db")
+    conn=sqlite3.connect(db_path + "temp_sensor.db")
     cur=conn.cursor()
     try:
         cur.execute(sql_string)

@@ -1,4 +1,4 @@
 output.csv
 sql_scripts.json
-
-
+__pychache__/
+.ipynb_checkpoints/

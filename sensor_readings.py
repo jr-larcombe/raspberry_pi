@@ -18,7 +18,7 @@ def temp_raw(sensor_path):
 # Define function to fetch all sensor readings 
 def read_temp():
     output_data = []
-    output_data.append(time.time())
+    output_data.append(int(time.time()))
     for i in temp_sensors:
         sensor_path = folder + i + '/w1_slave'
         lines = temp_raw(sensor_path)
